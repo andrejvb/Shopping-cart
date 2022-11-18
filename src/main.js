@@ -13,16 +13,29 @@ const loading = () => {
   loadingDiv.innerHTML = 'carregando...';
   return loadingDiv;
 };
-const inicialLoading = loading();
 
-sectionProducts.appendChild(inicialLoading);
+const erroMessage = () => {
+  const error = document.createElement('div');
+  error.className = 'error';
+  error.innerHTML = 'Algum erro ocorreu, recarregue a página e tente novamente';
+  return error;
+};
+const searchProduct = async () => {
+  const inicialLoading = loading();
+  sectionProducts.appendChild(inicialLoading);
 
-const productsList = await fetchProductsList('computador');
+  try {
+    const productsList = await fetchProductsList('computador');
+    sectionProducts.removeChild(inicialLoading);
+    productsList.forEach((product) => {
+      const productElement = createProductElement(product);
+      sectionProducts.appendChild(productElement);
+      return productElement;
+    });
+  } catch (error) {
+    sectionProducts.removeChild(inicialLoading);
+    sectionProducts.appendChild(erroMessage());
+  }
+};
 
-sectionProducts.removeChild(inicialLoading);
-
-productsList.forEach((product) => {
-  const productElement = createProductElement(product);
-  sectionProducts.appendChild(productElement);
-  return productElement;
-});
+searchProduct();
