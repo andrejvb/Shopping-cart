@@ -20,10 +20,10 @@ const erroMessage = () => {
   error.innerHTML = 'Algum erro ocorreu, recarregue a página e tente novamente';
   return error;
 };
+
 const searchProduct = async () => {
   const inicialLoading = loading();
   sectionProducts.appendChild(inicialLoading);
-
   try {
     const productsList = await fetchProductsList('computador');
     sectionProducts.removeChild(inicialLoading);
